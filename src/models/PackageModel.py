@@ -77,36 +77,36 @@ class Degree(Config):
     class Config:
         title = "AAAngle"
 
-class SelcukExxInputs(Inputs):
+class GrayInputs(Inputs):
     inputImage: InputImage
 
-class SelcukExxConfigs(Configs):
+class GrayConfigs(Configs):
     degree: Degree
     drawBBox: KeepSideBBox
 
-class SelcukExxOutputs(Outputs):
+class GrayOutputs(Outputs):
     outputImage: OutputImage
 
-class SelcukExxRequest(Request):
-    inputs: Optional[SelcukExxInputs]
-    configs: SelcukExxConfigs
+class GrayRequest(Request):
+    inputs: Optional[GrayInputs]
+    configs: GrayConfigs
 
     class Config:
         json_schema_extra = {
             "target": "configs"
         }
 
-class SelcukExxResponse(Response):
-    outputs: SelcukExxOutputs
+class GrayResponse(Response):
+    outputs: GrayOutputs
 
-class SelcukExxExecutor(Config):
-    name: Literal["SelcukExx"] = "SelcukExx"
-    value: Union[SelcukExxRequest, SelcukExxResponse]
+class GrayExecutor(Config):
+    name: Literal["Gray"] = "Gray"
+    value: Union[GrayRequest, GrayResponse]
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
 
     class Config:
-        title = "SelcukExx"
+        title = "Gray"
         json_schema_extra = {
             "target": {
                 "value": 0
@@ -115,7 +115,7 @@ class SelcukExxExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[SelcukExxExecutor]
+    value: Union[GrayExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
