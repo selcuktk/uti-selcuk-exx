@@ -36,6 +36,41 @@ class OutputImage(Output):
     class Config:
         title = "Image"
 
+class SecondInputs(Inputs):
+    inputImage: InputImage
+
+class SecondConfigs(Configs):
+    pass
+
+class SecondOutputs(Outputs):
+    outputImage: OutputImage
+
+class SecondRequest(Request):
+    inputs: Optional[SecondInputs]
+    configs: SecondConfigs
+
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
+class SecondResponse(Response):
+    outputs: SecondOutputs
+
+class SecondExecutor(Config):
+    name: Literal["Second"] = "Second"
+    value: Union[SecondRequest, SecondResponse]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Second Operation"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
+
 class KeepSideFalse(Config):
     name: Literal["False"] = "False"
     value: Literal[False] = False
@@ -65,6 +100,7 @@ class KeepSideBBox(Config):
 
     class Config:
         title = "Keep Sides"
+
 class Degree(Config):
     """
         Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
@@ -115,7 +151,7 @@ class GrayExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[GrayExecutor]
+    value: Union[GrayExecutor, SecondExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
