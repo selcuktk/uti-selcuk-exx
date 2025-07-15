@@ -71,8 +71,27 @@ class SecondExecutor(Config):
             }
         }
 
-class KeepSideFalse(Config):
-    name: Literal["False"] = "False"
+class NumberOfSomething(Config):
+    name: Literal["NumberOfSomething"] = "NumberOfSomething"
+    value: int = Field(default=7, ge=0, le=100)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeholder: Literal["[0, 100]"] = "[0, 100]"
+
+class MeaninglessProbability(Config):
+    name: Literal["MeaninglessProbability"] = "MeaninglessProbability"
+    value: double = Field(default=0.5, ge=0, le=1)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeholder: Literal["[0, 1]"] = "[0, 1]"
+    class Config:
+        title = "Meaningless Probability Factor"
+
+
+class DdListFalse(Config):
+    name: Literal["DdListFalse"] = "DdListFalse"
+    meaninglessProbability: MeaninglessProbability
+    numberOfSomething: NumberOfSomething
     value: Literal[False] = False
     type: Literal["bool"] = "bool"
     field: Literal["option"] = "option"
@@ -80,8 +99,8 @@ class KeepSideFalse(Config):
     class Config:
         title = "Disable"
 
-class KeepSideTrue(Config):
-    name: Literal["True"] = "True"
+class DdListTrue(Config):
+    name: Literal["DdListTrue"] = "DdListTrue"
     value: Literal[True] = True
     type: Literal["bool"] = "bool"
     field: Literal["option"] = "option"
@@ -89,17 +108,17 @@ class KeepSideTrue(Config):
     class Config:
         title = "Enable"
 
-class KeepSideBBox(Config):
+class DdList(Config):
     """
         Rotate image without catting off sides.
     """
-    name: Literal["KeepSide"] = "KeepSide"
-    value: Union[KeepSideTrue, KeepSideFalse]
+    name: Literal["DdList"] = "DdList"
+    value: Union[DdListTrue, DdListFalse]
     type: Literal["object"] = "object"
-    field: Literal["dropdownlist"] = "dropdownlist"
+    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
-        title = "Keep Sides"
+        title = "Dependent Dropdownlist"
 
 class Degree(Config):
     """
@@ -118,7 +137,7 @@ class GrayInputs(Inputs):
 
 class GrayConfigs(Configs):
     degree: Degree
-    drawBBox: KeepSideBBox
+    ddList: DdList
 
 class GrayOutputs(Outputs):
     outputImage: OutputImage
