@@ -36,11 +36,66 @@ class OutputImage(Output):
     class Config:
         title = "Image"
 
+class HighVolume(Config):
+    name: Literal["HighVolume"] = "HighVolume"
+    value: Literal[True] = True
+    type: Literal["bool"] = "bool"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title="High Density"
+
+class LowVolume(Config):
+    name: Literal["LowVolume"] = "LowVolume"
+    value: Literal[False] = False
+    type: Literal["bool"] = "bool"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title="Low Density"
+
+class SpeedLimit(Config):
+    name: Literal["SpeedLimit"] = "SpeedLimit"
+    value: double = Field(default=100, ge=0, le=500)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
+        title= "SpeedLimit"
+
+class Truck(Config):
+    name: Literal["Truck"] = "Truck"
+    value: Union[HighVolume,LowVolume]
+    type: Literal["object"] = "object"
+    field: Literal["dropdownlist"] = "dropdownlist"
+
+    class Config:
+        title = "Truck"
+
+class Car(Config):
+    name: Literal["Car"] = "Car"
+    speedLimit: SpeedLimit # speedLimit vehicle'ın altına SecondConfigs'in içine gidebilir
+    value: Literal["Car"] = "Car"
+    type: Literal["object"] = "object"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
+        title = "Car"
+
+class Vehicle(Config):
+    name: Literal["Vehicle"] = "Vehicle"
+    value: Union[Car, Truck]
+    type: Literal["object"] = "object"
+    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
+
+    class Config:
+        title = "Vehicle"
+
 class SecondInputs(Inputs):
     inputImage: InputImage
 
 class SecondConfigs(Configs):
-    ddList2: DdList2
+    vehicle: Vehicle
 
 class SecondOutputs(Outputs):
     outputImage: OutputImage
@@ -71,7 +126,7 @@ class SecondExecutor(Config):
             }
         }
 
-class HighDensity(Param):
+class HighDensity(Config):
     name: Literal["HighDensity"] = "HighDensity"
     value: Literal[True] = True
     type: Literal["bool"] = "bool"
@@ -80,7 +135,7 @@ class HighDensity(Param):
     class Config:
         title="High Density"
 
-class LowDensity(Param):
+class LowDensity(Config):
     name: Literal["LowDensity"] = "LowDensity"
     value: Literal[False] = False
     type: Literal["bool"] = "bool"
@@ -89,7 +144,7 @@ class LowDensity(Param):
     class Config:
         title="Low Density"
 
-class Temperature(Param):
+class Temperature(Config):
     name: Literal["Temperature"] = "Temperature"
     value: double = Field(default=20, ge=90*(-1), le=57)
     type: Literal["number"] = "number"
@@ -106,7 +161,7 @@ class Rainy(Config):
     field: Literal["dropdownlist"] = "dropdownlist"
 
     class Config:
-        title = "Disable"
+        title = "Rainy"
 
 class Sunny(Config):
     name: Literal["Sunny"] = "Sunny"
@@ -116,7 +171,7 @@ class Sunny(Config):
     field: Literal["textInput"] = "textInput"
 
     class Config:
-        title = "Enable"
+        title = "Sunnyy"
 
 class Weather(Config):
     name: Literal["Weather"] = "Weather"
@@ -125,7 +180,7 @@ class Weather(Config):
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
-        title = "Dependent Dropdownlist"
+        title = "Weather"
 
 class GrayInputs(Inputs):
     inputImage: InputImage
