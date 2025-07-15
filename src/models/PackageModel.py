@@ -40,7 +40,7 @@ class SecondInputs(Inputs):
     inputImage: InputImage
 
 class SecondConfigs(Configs):
-    pass
+    ddList2: DdList2
 
 class SecondOutputs(Outputs):
     outputImage: OutputImage
@@ -71,73 +71,67 @@ class SecondExecutor(Config):
             }
         }
 
-class NumberOfSomething(Config):
-    name: Literal["NumberOfSomething"] = "NumberOfSomething"
-    value: int = Field(default=7, ge=0, le=100)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-    placeholder: Literal["[0, 100]"] = "[0, 100]"
-
-class MeaninglessProbability(Config):
-    name: Literal["MeaninglessProbability"] = "MeaninglessProbability"
-    value: double = Field(default=0.5, ge=0, le=1)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-    placeholder: Literal["[0, 1]"] = "[0, 1]"
-    class Config:
-        title = "Meaningless Probability Factor"
-
-
-class DdListFalse(Config):
-    name: Literal["DdListFalse"] = "DdListFalse"
-    meaninglessProbability: MeaninglessProbability
-    numberOfSomething: NumberOfSomething
-    value: Literal[False] = False
-    type: Literal["bool"] = "bool"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title = "Disable"
-
-class DdListTrue(Config):
-    name: Literal["DdListTrue"] = "DdListTrue"
+class HighDensity(Param):
+    name: Literal["HighDensity"] = "HighDensity"
     value: Literal[True] = True
     type: Literal["bool"] = "bool"
     field: Literal["option"] = "option"
 
     class Config:
+        title="High Density"
+
+class LowDensity(Param):
+    name: Literal["LowDensity"] = "LowDensity"
+    value: Literal[False] = False
+    type: Literal["bool"] = "bool"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title="Low Density"
+
+class Temperature(Param):
+    name: Literal["Temperature"] = "Temperature"
+    value: double = Field(default=20, ge=90*(-1), le=57)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
+        title="Temperature"
+
+
+class Rainy(Config):
+    name: Literal["Rainy"] = "Rainy"
+    value: Union[HighDensity,LowDensity]
+    type: Literal["object"] = "object"
+    field: Literal["dropdownlist"] = "dropdownlist"
+
+    class Config:
+        title = "Disable"
+
+class Sunny(Config):
+    name: Literal["Sunny"] = "Sunny"
+    temperature: Temperature # temperature weather'ın altına GrayConfigs'in içine gidebilir
+    value: Literal["Sunny"] = "Sunny"
+    type: Literal["int"] = "int"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
         title = "Enable"
 
-class DdList(Config):
-    """
-        Rotate image without catting off sides.
-    """
-    name: Literal["DdList"] = "DdList"
-    value: Union[DdListTrue, DdListFalse]
+class Weather(Config):
+    name: Literal["Weather"] = "Weather"
+    value: Union[Sunny, Rainy]
     type: Literal["object"] = "object"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
         title = "Dependent Dropdownlist"
 
-class Degree(Config):
-    """
-        Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
-    """
-    name: Literal["Degree"] = "Degree"
-    value: int = Field(ge=-359.0, le=359.0,default=0)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-
-    class Config:
-        title = "AAAngle"
-
 class GrayInputs(Inputs):
     inputImage: InputImage
 
 class GrayConfigs(Configs):
-    degree: Degree
-    ddList: DdList
+    weather: Weather
 
 class GrayOutputs(Outputs):
     outputImage: OutputImage
