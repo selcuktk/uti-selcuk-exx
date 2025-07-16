@@ -36,96 +36,6 @@ class OutputImage(Output):
     class Config:
         title = "Image"
 
-class HighVolume(Config):
-    name: Literal["HighVolume"] = "HighVolume"
-    value: Literal[True] = True
-    type: Literal["bool"] = "bool"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title="High Density"
-
-class LowVolume(Config):
-    name: Literal["LowVolume"] = "LowVolume"
-    value: Literal[False] = False
-    type: Literal["bool"] = "bool"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title="Low Density"
-
-class SpeedLimit(Config):
-    name: Literal["SpeedLimit"] = "SpeedLimit"
-    value: double = Field(default=100, ge=0, le=500)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-
-    class Config:
-        title= "SpeedLimit"
-
-class Truck(Config):
-    name: Literal["Truck"] = "Truck"
-    value: Union[HighVolume,LowVolume]
-    type: Literal["object"] = "object"
-    field: Literal["dropdownlist"] = "dropdownlist"
-
-    class Config:
-        title = "Truck"
-
-class Car(Config):
-    name: Literal["Car"] = "Car"
-    speedLimit: SpeedLimit # speedLimit vehicle'ın altına SecondConfigs'in içine gidebilir
-    value: Literal["Car"] = "Car"
-    type: Literal["object"] = "object"
-    field: Literal["textInput"] = "textInput"
-
-    class Config:
-        title = "Car"
-
-class Vehicle(Config):
-    name: Literal["Vehicle"] = "Vehicle"
-    value: Union[Car, Truck]
-    type: Literal["object"] = "object"
-    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
-
-    class Config:
-        title = "Vehicle"
-
-class SecondInputs(Inputs):
-    inputImage: InputImage
-
-class SecondConfigs(Configs):
-    vehicle: Vehicle
-
-class SecondOutputs(Outputs):
-    outputImage: OutputImage
-
-class SecondRequest(Request):
-    inputs: Optional[SecondInputs]
-    configs: SecondConfigs
-
-    class Config:
-        json_schema_extra = {
-            "target": "configs"
-        }
-
-class SecondResponse(Response):
-    outputs: SecondOutputs
-
-class SecondExecutor(Config):
-    name: Literal["Second"] = "Second"
-    value: Union[SecondRequest, SecondResponse]
-    type: Literal["object"] = "object"
-    field: Literal["option"] = "option"
-
-    class Config:
-        title = "Second Operation"
-        json_schema_extra = {
-            "target": {
-                "value": 0
-            }
-        }
-
 class HighDensity(Config):
     name: Literal["HighDensity"] = "HighDensity"
     value: Literal[True] = True
@@ -146,17 +56,16 @@ class LowDensity(Config):
 
 class Temperature(Config):
     name: Literal["Temperature"] = "Temperature"
-    value: double = Field(default=20, ge=90*(-1), le=57)
+    value: float = Field(default=20, ge=80*(-1), le=57)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
 
     class Config:
-        title="Temperature"
-
+        title= "Temperature"
 
 class Rainy(Config):
     name: Literal["Rainy"] = "Rainy"
-    value: Union[HighDensity,LowDensity]
+    value: Union[HighDensity, LowDensity]
     type: Literal["object"] = "object"
     field: Literal["dropdownlist"] = "dropdownlist"
 
@@ -164,14 +73,14 @@ class Rainy(Config):
         title = "Rainy"
 
 class Sunny(Config):
+    temperature: Temperature
     name: Literal["Sunny"] = "Sunny"
-    temperature: Temperature # temperature weather'ın altına GrayConfigs'in içine gidebilir
     value: Literal["Sunny"] = "Sunny"
-    type: Literal["int"] = "int"
-    field: Literal["textInput"] = "textInput"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
 
     class Config:
-        title = "Sunnyy"
+        title = "Sunny"
 
 class Weather(Config):
     name: Literal["Weather"] = "Weather"
@@ -182,11 +91,103 @@ class Weather(Config):
     class Config:
         title = "Weather"
 
+class ClimateInputs(Inputs):
+    inputImage: InputImage
+
+class ClimateConfigs(Configs):
+    weather: Weather
+
+class ClimateOutputs(Outputs):
+    outputImage: OutputImage
+
+class ClimateRequest(Request):
+    inputs: Optional[ClimateInputs]
+    configs: ClimateConfigs
+
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
+class ClimateResponse(Response):
+    outputs: ClimateOutputs
+
+class ClimateExecutor(Config):
+    name: Literal["Climate"] = "Climate"
+    value: Union[ClimateRequest, ClimateResponse]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Climate Executor"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
+
+class UltraLight(Config):
+    name: Literal["UltraLight"] = "UltraLight"
+    value: Literal[True] = True
+    type: Literal["bool"] = "bool"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title="UltraLight"
+
+class DefaultLight(Config):
+    name: Literal["DefaultLight"] = "DefaultLight"
+    value: Literal[False] = False
+    type: Literal["bool"] = "bool"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title="DefaultLight"
+
+class DarknessValue(Config):
+    name: Literal["DarknessValue"] = "DarknessValue"
+    value: float = Field(default=5, ge=0, le=10)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+
+    class Config:
+        title="Darkness Value"
+
+
+class Light(Config):
+    # lightness: Lightness
+    name: Literal["Light"] = "Light"
+    value: Union[DefaultLight, UltraLight]
+    type: Literal["object"] = "object"
+    field: Literal["dropdownlist"] = "dropdownlist"
+
+    class Config:
+        title = "Light"
+
+class Dark(Config):
+    darknessValue: DarknessValue
+    name: Literal["Dark"] = "Dark"
+    value: Literal["Dark"] = "Dark"
+    type: Literal["string"] = "string"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "Dark"
+
+class Grayness(Config):
+    name: Literal["Grayness"] = "Grayness"
+    value: Union[Dark, Light]
+    type: Literal["object"] = "object"
+    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
+
+    class Config:
+        title = "Grayness"
+
 class GrayInputs(Inputs):
     inputImage: InputImage
 
 class GrayConfigs(Configs):
-    weather: Weather
+    grayness: Grayness
 
 class GrayOutputs(Outputs):
     outputImage: OutputImage
@@ -219,7 +220,7 @@ class GrayExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[GrayExecutor, SecondExecutor]
+    value: Union[GrayExecutor, ClimateExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
