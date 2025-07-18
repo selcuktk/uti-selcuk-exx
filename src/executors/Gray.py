@@ -26,7 +26,7 @@ class Gray(Component):
         if self.request.get_param("Grayness") == "Dark":
             self.darkness_value = self.request.get_param("DarknessValue")
         else:
-            if self.request.get_param("Rainy") == "LowDensity":
+            if self.request.get_param("Light") == "DefaultLight":
                 self.density = False
             else:
                 self.density = True
