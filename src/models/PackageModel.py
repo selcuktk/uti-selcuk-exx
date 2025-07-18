@@ -1,7 +1,7 @@
-
 from pydantic import Field, validator
 from typing import List, Optional, Union, Literal
-from sdks.novavision.src.base.model import Package, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, Config
+from sdks.novavision.src.base.model import Package, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, \
+    Config
 
 
 class InputImage(Input):
@@ -20,9 +20,10 @@ class InputImage(Input):
     class Config:
         title = "Image"
 
+
 class OutputImage(Output):
     name: Literal["outputImage"] = "outputImage"
-    value: Union[List[Image],Image]
+    value: Union[List[Image], Image]
     type: str = "object"
 
     @validator("type", pre=True, always=True)
@@ -36,6 +37,7 @@ class OutputImage(Output):
     class Config:
         title = "Image"
 
+
 class HighDensity(Config):
     name: Literal["HighDensity"] = "HighDensity"
     value: Literal[True] = True
@@ -43,7 +45,8 @@ class HighDensity(Config):
     field: Literal["option"] = "option"
 
     class Config:
-        title="High Density"
+        title = "High Density"
+
 
 class LowDensity(Config):
     name: Literal["LowDensity"] = "LowDensity"
@@ -52,16 +55,18 @@ class LowDensity(Config):
     field: Literal["option"] = "option"
 
     class Config:
-        title="Low Density"
+        title = "Low Density"
+
 
 class Temperature(Config):
     name: Literal["Temperature"] = "Temperature"
-    value: float = Field(default=20, ge=80*(-1), le=57)
+    value: float = Field(default=20, ge=80 * (-1), le=57)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
 
     class Config:
-        title= "Temperature"
+        title = "Temperature"
+
 
 class Rainy(Config):
     name: Literal["Rainy"] = "Rainy"
@@ -71,6 +76,7 @@ class Rainy(Config):
 
     class Config:
         title = "Rainy"
+
 
 class Sunny(Config):
     temperature: Temperature
@@ -82,6 +88,7 @@ class Sunny(Config):
     class Config:
         title = "Sunny"
 
+
 class Weather(Config):
     name: Literal["Weather"] = "Weather"
     value: Union[Sunny, Rainy]
@@ -91,14 +98,20 @@ class Weather(Config):
     class Config:
         title = "Weather"
 
+
 class ClimateInputs(Inputs):
     inputImage: InputImage
+    inputImage2: InputImage
+
 
 class ClimateConfigs(Configs):
     weather: Weather
 
+
 class ClimateOutputs(Outputs):
     outputImage: OutputImage
+    outputImage2: OutputImage
+
 
 class ClimateRequest(Request):
     inputs: Optional[ClimateInputs]
@@ -109,8 +122,10 @@ class ClimateRequest(Request):
             "target": "configs"
         }
 
+
 class ClimateResponse(Response):
     outputs: ClimateOutputs
+
 
 class ClimateExecutor(Config):
     name: Literal["Climate"] = "Climate"
@@ -126,6 +141,7 @@ class ClimateExecutor(Config):
             }
         }
 
+
 class UltraLight(Config):
     name: Literal["UltraLight"] = "UltraLight"
     value: Literal[True] = True
@@ -133,7 +149,8 @@ class UltraLight(Config):
     field: Literal["option"] = "option"
 
     class Config:
-        title="UltraLight"
+        title = "UltraLight"
+
 
 class DefaultLight(Config):
     name: Literal["DefaultLight"] = "DefaultLight"
@@ -142,7 +159,8 @@ class DefaultLight(Config):
     field: Literal["option"] = "option"
 
     class Config:
-        title="DefaultLight"
+        title = "DefaultLight"
+
 
 class DarknessValue(Config):
     name: Literal["DarknessValue"] = "DarknessValue"
@@ -151,7 +169,7 @@ class DarknessValue(Config):
     field: Literal["textInput"] = "textInput"
 
     class Config:
-        title="Darkness Value"
+        title = "Darkness Value"
 
 
 class Light(Config):
@@ -164,6 +182,7 @@ class Light(Config):
     class Config:
         title = "Light"
 
+
 class Dark(Config):
     darknessValue: DarknessValue
     name: Literal["Dark"] = "Dark"
@@ -174,6 +193,7 @@ class Dark(Config):
     class Config:
         title = "Dark"
 
+
 class Grayness(Config):
     name: Literal["Grayness"] = "Grayness"
     value: Union[Dark, Light]
@@ -183,14 +203,18 @@ class Grayness(Config):
     class Config:
         title = "Grayness"
 
+
 class GrayInputs(Inputs):
     inputImage: InputImage
+
 
 class GrayConfigs(Configs):
     grayness: Grayness
 
+
 class GrayOutputs(Outputs):
     outputImage: OutputImage
+
 
 class GrayRequest(Request):
     inputs: Optional[GrayInputs]
@@ -201,8 +225,10 @@ class GrayRequest(Request):
             "target": "configs"
         }
 
+
 class GrayResponse(Response):
     outputs: GrayOutputs
+
 
 class GrayExecutor(Config):
     name: Literal["Gray"] = "Gray"
@@ -218,6 +244,7 @@ class GrayExecutor(Config):
             }
         }
 
+
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
     value: Union[GrayExecutor, ClimateExecutor]
@@ -230,6 +257,7 @@ class ConfigExecutor(Config):
 
 class PackageConfigs(Configs):
     executor: ConfigExecutor
+
 
 class PackageModel(Package):
     configs: PackageConfigs
