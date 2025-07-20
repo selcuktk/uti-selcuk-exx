@@ -1,5 +1,5 @@
 from sdks.novavision.src.helper.package import PackageHelper
-from components.Package.src.models.PackageModel import PackageModel, PackageConfigs, ConfigExecutor, GrayOutputs, \
+from components.SelcukExx.src.models.PackageModel import PackageModel, PackageConfigs, ConfigExecutor, GrayOutputs, \
     GrayResponse, GrayExecutor, ClimateOutputs, ClimateResponse, ClimateExecutor, OutputImageOne, OutputImageTwo
 
 
