@@ -4,8 +4,8 @@ from components.Package.src.models.PackageModel import PackageModel, PackageConf
 
 
 def build_response_climate(context):
-    outputImageOne = OutputImageOne(value=context.image)
-    outputImageTwo = OutputImageTwo(value=context.image)
+    outputImageOne = OutputImageOne(value=context.image_one)
+    outputImageTwo = OutputImageTwo(value=context.image_two)
     Outputs = ClimateOutputs(outputImageOne=outputImageOne, outputImageTwo=outputImageTwo)
     climateResponse = ClimateResponse(outputs=Outputs)
     climateExecutor = ClimateExecutor(value=climateResponse)
