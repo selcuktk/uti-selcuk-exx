@@ -277,7 +277,7 @@ class ClimateExecutor(Config):
     field: Literal["option"] = "option"
 
     class Config:
-        title = "Climate Executor"
+        title = "Climate"
         json_schema_extra = {
             "target": {
                 "value": 0
