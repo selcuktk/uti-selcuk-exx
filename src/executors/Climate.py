@@ -7,6 +7,8 @@ import cv2
 import sys
 import numpy as np
 
+from src.utils.response import build_response_climate
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../../../'))
 
 from sdks.novavision.src.media.image import Image
@@ -53,7 +55,7 @@ class Climate(Component):
         self.image_one = Image.set_frame(img=imgOne, package_uID=self.uID, redis_db=self.redis_db)
         self.image_two = Image.set_frame(img=imgTwo, package_uID=self.uID, redis_db=self.redis_db)
 
-        packageModel = build_response(context=self)
+        packageModel = build_response_climate(context=self)
         return packageModel
 
 
